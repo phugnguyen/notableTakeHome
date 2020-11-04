@@ -25,7 +25,7 @@ export const transcribeText = (text: string): string => {
     } else {
       replacement = numberMap.get(number);
       if (replacement === undefined) {
-        throw "Please use a number from one through nine and then say next. We do not currently support saying numbers after nine."
+        throw new Error("Please use a number from one through nine and then say next. We do not currently support saying numbers after nine.")
       }
       
       listNumber = listNumber ? listNumber + 1 : parseInt(replacement) + 1;
@@ -38,33 +38,3 @@ export const transcribeText = (text: string): string => {
 }
 
 const capitalize = (word: string): string => word.slice(0, 1).toUpperCase() + word.slice(1);
-
-// normally this would be in a jest file
-const test = () => {
-  // start with 'one'
-  const phrase1: string = "Patient presents today with several issues. Number one BMI has increased by 10% since their\
-  last visit.Number next patient reports experiencing dizziness several times in the last two\
-  weeks.Number next patient has a persistent cough that hasn’t improved for last four weeks."
-
-  // start with 'five'
-  const phrase5: string = "Patient presents today with several issues. Number five BMI has increased by 10% since their\
-  last visit.Number next patient reports experiencing dizziness several times in the last two\
-  weeks.Number next patient has a persistent cough that hasn’t improved for last four weeks."
-
-  // start with an unsupported number 'ten'
-  const phrase10: string = "Patient presents today with several issues. Number ten BMI has increased by 10% since their\
-  last visit.Number next patient reports experiencing dizziness several times in the last two\
-  weeks.Number next patient has a persistent cough that hasn’t improved for last four weeks."
-
-  const phrases: string[] = [phrase1, phrase5, phrase10];
-
-  for (const phrase of phrases) {
-    try {
-      console.log(transcribeText(phrase) + '\n');
-    } catch (err) {
-      console.log(err);
-    }
-  }
-}
-
-test();
