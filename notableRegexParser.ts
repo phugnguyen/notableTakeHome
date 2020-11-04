@@ -1,7 +1,7 @@
-const transcribeText = (text: string): string => {
+export const transcribeText = (text: string): string => {
   const regexPattern: RegExp = /Number\s([a-z]+)\s(\w+)/g;
   const keyPhrase = "next";
-  
+
   // theres probably a library for this somewhere
   const numberMap: Map<string, string> = new Map();
   numberMap.set("one", "1");
@@ -13,21 +13,21 @@ const transcribeText = (text: string): string => {
   numberMap.set("seven", "7");
   numberMap.set("eight", "8");
   numberMap.set("nine", "9");
-  numberMap.set(keyPhrase, keyPhrase);
 
   let listNumber: number = 0;
 
   const replaceText = (matchedString: string, number: string, nextWord: string): string => {
-    let replacement: string | undefined = numberMap.get(number);
-    if (replacement === undefined){
-      throw "Please use a number from one through nine and then say next. We do not currently support saying numbers after nine."
-    }
-
-    if (replacement === keyPhrase){
+    let replacement: string | undefined;
+    if (number === keyPhrase) {
       listNumber = listNumber ? listNumber : 1;
       replacement = listNumber.toString();
-      listNumber++; 
+      listNumber++;
     } else {
+      replacement = numberMap.get(number);
+      if (replacement === undefined) {
+        throw "Please use a number from one through nine and then say next. We do not currently support saying numbers after nine."
+      }
+      
       listNumber = listNumber ? listNumber + 1 : parseInt(replacement) + 1;
     }
 
@@ -37,7 +37,7 @@ const transcribeText = (text: string): string => {
   return text.replace(regexPattern, replaceText);
 }
 
-const capitalize = (word: string): string => word.slice(0, 1).toUpperCase() + word.slice(1); 
+const capitalize = (word: string): string => word.slice(0, 1).toUpperCase() + word.slice(1);
 
 // normally this would be in a jest file
 const test = () => {
@@ -58,10 +58,10 @@ const test = () => {
 
   const phrases: string[] = [phrase1, phrase5, phrase10];
 
-  for (const phrase of phrases){
+  for (const phrase of phrases) {
     try {
       console.log(transcribeText(phrase) + '\n');
-    } catch (err){
+    } catch (err) {
       console.log(err);
     }
   }
