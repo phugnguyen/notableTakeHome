@@ -4,7 +4,10 @@ import RecaptchaPlugin from 'puppeteer-extra-plugin-recaptcha'
 import { delay, getRandomArbitrary } from './puppeteer';
 import LoginObj from './logins';
 
-// new file ./logins.ts
+// when you're ready to run this file, navigate to it in termal and run
+// ts-node walmartBot.ts
+
+// new file ./logins.ts , this file is git ignored
 // start of file
 // const LoginObj = {
 //   email: 'EMAIL LOGIN FOR WALMART ACCOUNT',
