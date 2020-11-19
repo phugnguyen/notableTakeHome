@@ -1,6 +1,7 @@
 export const transcribeText = (text: string): string => {
   const regexPattern: RegExp = /Number\s([a-z]+)\s(\w+)/g;
   const keyPhrase = "next";
+  const endPhrase = "end";
 
   // theres probably a library for this somewhere
   const numberMap: Map<string, string> = new Map();
@@ -22,14 +23,18 @@ export const transcribeText = (text: string): string => {
       listNumber = listNumber ? listNumber : 1;
       replacement = listNumber.toString();
       listNumber++;
+    } else if (number === endPhrase) {
+      listNumber = 0;
+      return `\n${capitalize(nextWord)}`
     } else {
       replacement = numberMap.get(number);
       if (replacement === undefined) {
-        throw new Error("Please use a number from one through nine and then say next. We do not currently support saying numbers after nine.")
+        return matchedString;
       }
-      
-      listNumber = listNumber ? listNumber + 1 : parseInt(replacement) + 1;
+
+      listNumber = parseInt(replacement) + 1;
     }
+
 
     return `\n${replacement}. ${capitalize(nextWord)}`
   }
